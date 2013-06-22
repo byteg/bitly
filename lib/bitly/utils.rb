@@ -43,7 +43,15 @@ module Bitly
     
     def get_result(request)
       begin
-        json = Net::HTTP.get(request)
+        url = URI.parse(request)
+
+        req = Net::HTTP::Get.new(url.path)
+        req.add_field("access_token", @api_key)
+        res = Net::HTTP.new(url.host, url.port).start do |http|
+          http.request(req)
+        end
+        json = res.body
+
         # puts json.inspect
         result = MultiJson.load(json)
       rescue MultiJson::DecodeError
