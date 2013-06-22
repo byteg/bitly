@@ -33,7 +33,7 @@ module Bitly
     end
     
     def create_url(resource="",args={})
-      args = args.merge({:login => @login, :apiKey => @api_key, :version => API_VERSION})
+      args = args.merge({:login => @login, :access_token => @api_key, :version => API_VERSION})
       url = URI.join(API_URL,resource)
       long_urls = args.delete(:long_urls)
       url.query = args.map { |k,v| "%s=%s" % [CGI.escape(k.to_s), CGI.escape(v.to_s)] }.join("&")
